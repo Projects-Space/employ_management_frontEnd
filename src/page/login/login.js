@@ -2,25 +2,31 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Card, Row, Col } from "antd";
+import axios from "axios";
 import "./login.css";
 
-const LoginPage = () => {
+const LoginPage = ({ notify, baseURL, setSliderOn }) => {
   const navigate = useNavigate();
+  setSliderOn(false);
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
-  const handleSubmit = (event) => {
-    // event.preventDefault();
-    console.log("111111111111111", event);
-    // Perform login logic here
-    // You can make API requests, handle authentication, etc.
-
-    // Clear the input fields
-
-    // Redirect to the dashboard after successful login
-    navigate("/dashboard");
+  const handleSubmit = async (event) => {
+    await axios
+      .post(baseURL + "/auth/log-in", {
+        userName: event.userName,
+        password: event.password
+      })
+      .then((data) => {
+        notify(data.data.message);
+        setSliderOn(true);
+        navigate("/dashboard");
+      })
+      .catch(({ response }) => {
+        notify(response.data.message, "error");
+      });
   };
 
   return (
@@ -36,24 +42,24 @@ const LoginPage = () => {
           bordered={false}
           style={{
             width: 400,
-            textAlign: "center",
+            textAlign: "center"
           }}
         >
           <Form
             name="normal_login"
             className="login-form"
             initialValues={{
-              remember: true,
+              remember: true
             }}
             onFinish={handleSubmit}
           >
             <Form.Item
-              name="username"
+              name="userName"
               rules={[
                 {
                   required: true,
-                  message: "Please input your Username!",
-                },
+                  message: "Please input your Username!"
+                }
               ]}
             >
               <Input
@@ -66,8 +72,8 @@ const LoginPage = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your Password!",
-                },
+                  message: "Please input your Password!"
+                }
               ]}
             >
               <Input

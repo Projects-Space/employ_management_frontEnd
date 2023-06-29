@@ -135,7 +135,7 @@ const RegisterPage = () => {
     // Clear the input fields
 
     // Redirect to the login page after successful registration
-    navigate("/");
+    // navigate("/");
   };
 
   return (
