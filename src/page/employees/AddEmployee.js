@@ -71,7 +71,7 @@ const AddEmployee = ({ baseURL, notify }) => {
         navigate("/");
       })
       .catch(({ response }) => {
-        notify(response.data.message, "error");
+        notify(response.data.data, "error");
       });
     // navigate("/");
   };

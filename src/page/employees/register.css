@@ -1,3 +1,6 @@
+* {
+  transition: all 0.2s;
+}
 .list-div {
   text-align: left;
   width: 100vw;

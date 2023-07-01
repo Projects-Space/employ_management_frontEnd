@@ -1,6 +1,6 @@
-import { Layout, Menu, theme } from "antd";
+import { Layout, Menu, theme, Space } from "antd";
 import React, { useState } from "react";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, BellOutlined } from "@ant-design/icons";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import LoginPage from "./page/login/login";
@@ -33,7 +33,7 @@ const notify = (message, type = "success") => {
   }
 };
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 const App = () => {
   const [sliderOn, setSliderOn] = useState(true);
   const {
@@ -65,7 +65,7 @@ const App = () => {
               <Link to="/employee" />
             </Menu.Item>
             <Menu.Item key="2">
-              <UserOutlined />
+              <BellOutlined />
               <span>this</span>
               <Link to="/" />
             </Menu.Item>
@@ -84,6 +84,29 @@ const App = () => {
             }
           }
         >
+          {/* notification icon */}
+          <Space
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              marginTop: "1rem",
+              marginLeft: "13rem",
+              zIndex: 3
+            }}
+          >
+            <BellOutlined
+              style={{
+                fontSize: "1.2rem"
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = "#1890ff";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = "black";
+              }}
+            />
+          </Space>
           <Content
             style={{
               margin: "24px 16px 0",
