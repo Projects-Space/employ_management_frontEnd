@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Card, Row, Col } from "antd";
 import axios from "axios";
+import Cookies from "universal-cookie";
 import "./login.css";
 
 const LoginPage = ({ notify, baseURL, setSliderOn }) => {
   const navigate = useNavigate();
   setSliderOn(false);
-
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
+  const cookies = new Cookies();
 
   const handleSubmit = async (event) => {
     await axios
@@ -19,10 +17,12 @@ const LoginPage = ({ notify, baseURL, setSliderOn }) => {
         userName: event.userName,
         password: event.password
       })
-      .then((data) => {
+      .then(async (data) => {
         notify(data.data.message);
         setSliderOn(true);
-        navigate("/dashboard");
+        cookies.set("access_token", data.data.data.access_token, { path: "/" });
+
+        navigate("/");
       })
       .catch(({ response }) => {
         notify(response.data.message, "error");

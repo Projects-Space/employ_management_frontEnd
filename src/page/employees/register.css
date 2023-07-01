@@ -1,0 +1,12 @@
+.list-div {
+  text-align: left;
+  width: 100vw;
+  margin-left: 12rem;
+  border: 1px solid #8d8d8d;
+  border-radius: 7px;
+  padding: 1rem;
+}
+
+.list-div:hover {
+  border: 1px solid #1677ff;
+}

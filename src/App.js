@@ -1,19 +1,16 @@
 import { Layout, Menu, theme } from "antd";
 import React, { useState } from "react";
-import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined
-} from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import LoginPage from "./page/login/login";
-import RegisterPage from "./page/register/register";
+import NotFound from "./page/notFound/NotFound";
+import DashboardPage from "./page/Dashboard";
+
+import AddEmployee from "./page/employees/AddEmployee";
+import ListEmployee from "./page/employees/ListEmployee";
+import ViewEmployee from "./page/employees/ViewEmployee";
+
 import toast, { Toaster } from "react-hot-toast";
 
 const baseURL = "http://localhost:4000/api/v1";
@@ -36,20 +33,9 @@ const notify = (message, type = "success") => {
   }
 };
 
-const DashboardPage = () => {
-  return (
-    <div>
-      <h2>Welcome to the Dashboard</h2>
-      <button onClick={() => notify("this is long message", "error")}>
-        click
-      </button>
-    </div>
-  );
-};
-
 const { Header, Content, Footer, Sider } = Layout;
 const App = () => {
-  const [sliderOn, setSliderOn] = useState(false);
+  const [sliderOn, setSliderOn] = useState(true);
   const {
     token: { colorBgContainer }
   } = theme.useToken();
@@ -71,13 +57,12 @@ const App = () => {
           <Menu
             theme="light"
             mode="inline"
-            defaultSelectedKeys={["1"]}
             // items={items}
           >
             <Menu.Item key="1">
               <UserOutlined />
-              <span>this</span>
-              <Link to="/" />
+              <span>Employees</span>
+              <Link to="/employee" />
             </Menu.Item>
             <Menu.Item key="2">
               <UserOutlined />
@@ -107,7 +92,7 @@ const App = () => {
           >
             <div
               style={{
-                padding: 24,
+                height: "100vh",
                 textAlign: "center"
               }}
             >
@@ -115,7 +100,7 @@ const App = () => {
               <Routes>
                 <Route
                   exact
-                  path="/"
+                  path="/login"
                   element={
                     <LoginPage
                       notify={notify}
@@ -124,8 +109,31 @@ const App = () => {
                     />
                   }
                 />
-                <Route exact path="dashboard" element={<DashboardPage />} />
-                <Route exact path="register" element={<RegisterPage />} />
+                <Route
+                  exact
+                  path="/"
+                  element={<DashboardPage notify={notify} baseURL={baseURL} />}
+                />
+                <Route
+                  path="*"
+                  element={<NotFound setSliderOn={setSliderOn} />}
+                />
+
+                <Route
+                  exact
+                  path="/employee/view"
+                  element={<ViewEmployee notify={notify} baseURL={baseURL} />}
+                />
+                <Route
+                  exact
+                  path="/employee/add"
+                  element={<AddEmployee notify={notify} baseURL={baseURL} />}
+                />
+                <Route
+                  exact
+                  path="employee"
+                  element={<ListEmployee notify={notify} baseURL={baseURL} />}
+                />
               </Routes>
             </div>
           </Content>
