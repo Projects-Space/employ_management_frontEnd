@@ -7,7 +7,7 @@ const ListEmployee = ({ baseURL, notify }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .post(baseURL + "/user/list", { search: "a" })
+      .post(baseURL + "/user/list", { search: "" })
       .then(({ data }) => {
         setData(data.data.list);
       })

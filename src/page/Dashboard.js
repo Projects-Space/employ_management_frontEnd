@@ -5,9 +5,8 @@ import Cookies from "universal-cookie";
 const DashboardPage = ({ notify, baseURL }) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
-  setTimeout(() => {
-    authChecker(baseURL, notify, navigate);
-  }, 10000);
+  const access_token = cookies.get("access_token");
+  authChecker(baseURL, notify, navigate, access_token);
   return (
     <div>
       <h2>Welcome to the Dashboard</h2>

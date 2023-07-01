@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Card, Row, Col, Select } from "antd";
 import axios from "axios";
 import "./register.css";
+import Cookies from "universal-cookie";
 
 const AddEmployee = ({ baseURL, notify }) => {
   const navigate = useNavigate();
+  const cookies = new Cookies();
   const { Option } = Select;
   const formItemLayout = {
     labelCol: {
@@ -61,8 +63,9 @@ const AddEmployee = ({ baseURL, notify }) => {
   );
 
   const handleSubmit = async (event) => {
+    const access_token = cookies.get("access_token");
     await axios
-      .post(baseURL + "/user/add", event, { withCredentials: true })
+      .post(baseURL + "/user/add", event, { headers: { access_token } })
       .then(({ data }) => {
         notify(data.message);
         navigate("/");
