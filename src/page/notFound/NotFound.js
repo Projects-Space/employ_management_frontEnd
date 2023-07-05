@@ -1,11 +1,7 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "./notFound.css";
 
-const NotFoundPage = ({ setSliderOn }) => {
-  const navigate = useNavigate();
-  setSliderOn(false);
-
+const NotFoundPage = () => {
   return (
     <div className="not-found-main">
       <div className="not-found-fof">

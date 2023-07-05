@@ -1,22 +1,33 @@
 import { List, Button, Space, Pagination, Input } from "antd";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Cookies from "universal-cookie";
+import authChecker from "../../helper/authChecker";
 const { Search } = Input;
 
-const ListEmployee = ({ baseURL, notify }) => {
+const ListEmployee = ({ baseURL, notify, setTransporter }) => {
   const [data, setData] = useState([]);
   const [reqObj, setReqObj] = useState({
     page: 1,
     search: ""
   });
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const access_token = cookies.get("access_token");
+  authChecker(baseURL, notify, navigate, access_token);
   const [totalDoc, setTotalDoc] = useState(0);
   useEffect(() => {
     axios
-      .post(baseURL + "/user/list", {
-        search: reqObj.search,
-        page: reqObj.page
-      })
+      .post(
+        baseURL + "/user/list",
+        {
+          search: reqObj.search,
+          page: reqObj.page
+        },
+        { headers: { access_token } }
+      )
       .then(({ data }) => {
         setTotalDoc(data.data.totalDocs * 1);
         setData(data.data.list);
@@ -49,7 +60,7 @@ const ListEmployee = ({ baseURL, notify }) => {
       </Space>
       <Space
         style={{
-          position: "fixed",
+          position: "absolute",
           right: 0,
           marginTop: "3.5rem",
           marginRight: "2rem",
@@ -85,7 +96,7 @@ const ListEmployee = ({ baseURL, notify }) => {
         renderItem={(item) => (
           <List.Item>
             <div className="list-div">
-              <Link to={`/empolyee/view`}>
+              <Link to={`/employee/${item._id}`}>
                 <List.Item.Meta
                   title={item.fullName}
                   description={item.designation ? item.designation : " "}

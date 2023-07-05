@@ -6,10 +6,12 @@ import axios from "axios";
 import Cookies from "universal-cookie";
 import "./login.css";
 
-const LoginPage = ({ notify, baseURL, setSliderOn }) => {
+const LoginPage = ({ notify, baseURL, setCheckObj }) => {
   const navigate = useNavigate();
-  setSliderOn(false);
   const cookies = new Cookies();
+  if (cookies.get("access_token")) {
+    navigate("/");
+  }
 
   const handleSubmit = async (event) => {
     await axios
@@ -19,9 +21,9 @@ const LoginPage = ({ notify, baseURL, setSliderOn }) => {
       })
       .then(async (data) => {
         notify(data.data.message);
-        setSliderOn(true);
         cookies.set("access_token", data.data.data.access_token, { path: "/" });
-
+        cookies.set("checkObj", data.data.data, { path: "/" });
+        setCheckObj(data.data.data);
         navigate("/");
       })
       .catch(({ response }) => {
@@ -33,7 +35,7 @@ const LoginPage = ({ notify, baseURL, setSliderOn }) => {
     <Row
       type="flex"
       justify="center"
-      align="middle"
+      align="center"
       style={{ minHeight: "100vh" }}
     >
       <Col>
@@ -82,7 +84,7 @@ const LoginPage = ({ notify, baseURL, setSliderOn }) => {
                 placeholder="Password"
               />
             </Form.Item>
-            <Form.Item>
+            {/* <Form.Item>
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
@@ -96,7 +98,7 @@ const LoginPage = ({ notify, baseURL, setSliderOn }) => {
                 {" "}
                 Forgot password
               </span>
-            </Form.Item>
+            </Form.Item> */}
 
             <Form.Item>
               <Button
@@ -107,16 +109,6 @@ const LoginPage = ({ notify, baseURL, setSliderOn }) => {
               >
                 Log in
               </Button>
-              Or{" "}
-              <span
-                style={{ color: "#1677ff", cursor: "pointer" }}
-                onClick={() => {
-                  navigate("register");
-                }}
-              >
-                {" "}
-                register now!
-              </span>
             </Form.Item>
           </Form>
         </Card>

@@ -4,10 +4,13 @@ import { Button, Form, Input, Card, Row, Col, Select } from "antd";
 import axios from "axios";
 import "./register.css";
 import Cookies from "universal-cookie";
+import authChecker from "../../helper/authChecker";
 
 const AddEmployee = ({ baseURL, notify }) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
+  const access_token = cookies.get("access_token");
+  authChecker(baseURL, notify, navigate, access_token);
   const { Option } = Select;
   const formItemLayout = {
     labelCol: {
@@ -63,7 +66,6 @@ const AddEmployee = ({ baseURL, notify }) => {
   );
 
   const handleSubmit = async (event) => {
-    const access_token = cookies.get("access_token");
     await axios
       .post(baseURL + "/user/add", event, { headers: { access_token } })
       .then(({ data }) => {
@@ -77,12 +79,7 @@ const AddEmployee = ({ baseURL, notify }) => {
   };
 
   return (
-    <Row
-      type="flex"
-      justify="center"
-      align="middle"
-      style={{ minHeight: "100vh" }}
-    >
+    <Row type="flex" justify="center" style={{ minHeight: "100vh" }}>
       <Col>
         <Card
           title="Register"
@@ -187,7 +184,11 @@ const AddEmployee = ({ baseURL, notify }) => {
                 }
               ]}
             >
-              <Select placeholder="select your gender">
+              <Select
+                placeholder="select your gender"
+                dropdownStyle={{ zIndex: 1000, marginTop: "2rem" }}
+                getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              >
                 <Option value="male">Male</Option>
                 <Option value="female">Female</Option>
                 <Option value="other">Other</Option>

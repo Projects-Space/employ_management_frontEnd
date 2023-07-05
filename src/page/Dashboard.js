@@ -6,7 +6,7 @@ const DashboardPage = ({ notify, baseURL }) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const access_token = cookies.get("access_token");
-  authChecker(baseURL, notify, navigate, access_token);
+  authChecker(baseURL, notify, navigate, access_token, "all");
   return (
     <div>
       <h2>Welcome to the Dashboard</h2>

@@ -1,55 +1,24 @@
-import { List, Button, Space } from "antd";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Form, Input, Card, Row, Col, Select } from "antd";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import "./register.css";
+import Cookies from "universal-cookie";
+import authChecker from "../../helper/authChecker";
 
 const ViewEmployee = ({ baseURL, notify }) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    axios
-      .post(baseURL + "/user/list", {})
-      .then(({ data }) => {
-        setData(data.data.list);
-      })
-      .catch(({ response }) => {
-        console.log(response);
-        notify("Something went wrong with...", "error");
-      });
-  }, []);
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const access_token = cookies.get("access_token");
+  authChecker(baseURL, notify, navigate, access_token);
+  const { id } = useParams();
+
   return (
     <>
-      <Space
-        style={{
-          position: "fixed",
-          bottom: 0,
-          right: 0,
-          marginBottom: "3rem",
-          marginRight: "3rem"
-        }}
-      >
-        <Button type="primary">New Employee</Button>
-      </Space>
-      <Space style={{ fontSize: "2rem" }}>Employee</Space>
-      <List
-        pagination={{
-          position: "top",
-          align: "end"
-        }}
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
-            <div className="list-div">
-              <Link to={`/empolyee/view`}>
-                <List.Item.Meta
-                  title={item.fullName}
-                  description={item.designation ? item.designation : " "}
-                />
-              </Link>
-            </div>
-          </List.Item>
-        )}
-      />
+      <div>Upcoming Employee View</div>
+      <a href={`/employee/update/${id}`}>Update Screen here...</a>
     </>
   );
 };
+
 export default ViewEmployee;

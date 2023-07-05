@@ -1,7 +1,16 @@
 import { Layout, Menu, theme, Space } from "antd";
-import React, { useState } from "react";
-import { UserOutlined, BellOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import {
+  UserOutlined,
+  BellOutlined,
+  LogoutOutlined,
+  PieChartOutlined,
+  RadarChartOutlined,
+  AlertOutlined,
+  TeamOutlined
+} from "@ant-design/icons";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 import LoginPage from "./page/login/login";
 import NotFound from "./page/notFound/NotFound";
@@ -9,7 +18,10 @@ import DashboardPage from "./page/Dashboard";
 
 import AddEmployee from "./page/employees/AddEmployee";
 import ListEmployee from "./page/employees/ListEmployee";
+import UpdateEmployee from "./page/employees/UpdateEmployee";
 import ViewEmployee from "./page/employees/ViewEmployee";
+
+import MyProfile from "./page/myProfile/MyProfile";
 
 import toast, { Toaster } from "react-hot-toast";
 
@@ -33,17 +45,20 @@ const notify = (message, type = "success") => {
   }
 };
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Header } = Layout;
 const App = () => {
-  const [sliderOn, setSliderOn] = useState(true);
+  const cookies = new Cookies();
+  const [checkObj, setCheckObj] = useState(cookies.get("checkObj"));
   const {
     token: { colorBgContainer }
   } = theme.useToken();
+
   return (
     <BrowserRouter>
       <Layout hasSider>
         <Sider
           style={{
+            marginTop: "3rem",
             overflow: "auto",
             height: "100vh",
             position: "fixed",
@@ -51,27 +66,62 @@ const App = () => {
             top: 0,
             bottom: 0,
             background: colorBgContainer,
-            display: sliderOn ? "block" : "none"
+            display: checkObj ? "block" : "none"
           }}
         >
-          <Menu
-            theme="light"
-            mode="inline"
-            // items={items}
-          >
-            <Menu.Item key="1">
-              <UserOutlined />
+          <Menu theme="light" mode="inline">
+            <Menu.Item
+              key="1"
+              style={{
+                display: cookies.get("checkObj")
+                  ? cookies.get("checkObj").userType == "admin"
+                    ? "block"
+                    : "none"
+                  : "block"
+              }}
+            >
+              <TeamOutlined />
               <span>Employees</span>
               <Link to="/employee" />
             </Menu.Item>
-            <Menu.Item key="2">
-              <BellOutlined />
-              <span>this</span>
+            <Menu.Item
+              key="2"
+              style={{
+                display: cookies.get("checkObj")
+                  ? cookies.get("checkObj").userType == "admin"
+                    ? "block"
+                    : "none"
+                  : "block"
+              }}
+            >
+              <AlertOutlined />
+              <span>Leave's Request</span>
+              <Link to="/employee" />
+            </Menu.Item>
+            <Menu.Item
+              key="3"
+              style={{
+                display: cookies.get("checkObj")
+                  ? cookies.get("checkObj").userType == "employ"
+                    ? "block"
+                    : "none"
+                  : "block"
+              }}
+            >
+              <UserOutlined />
+              <span>My Profile</span>
+              <Link to="/myProfile" />
+            </Menu.Item>
+
+            {/* //-------------------------------- */}
+            <Menu.Item key="30">
+              <RadarChartOutlined />
+              <span>Upcoming</span>
               <Link to="/" />
             </Menu.Item>
-            <Menu.Item key="3">
-              <UserOutlined />
-              <span>this</span>
+            <Menu.Item key="40">
+              <PieChartOutlined />
+              <span>Upcoming</span>
               <Link to="/" />
             </Menu.Item>
           </Menu>
@@ -84,32 +134,58 @@ const App = () => {
             }
           }
         >
-          {/* notification icon */}
-          <Space
+          <Header
             style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              marginTop: "1rem",
-              marginLeft: "13rem",
-              zIndex: 3
+              background: colorBgContainer
             }}
           >
-            <BellOutlined
+            <Space
               style={{
-                fontSize: "1.2rem"
+                position: "absolute",
+                top: 0,
+                right: 0,
+                marginTop: "1rem",
+                marginRight: "2rem",
+                zIndex: 30
               }}
-              onMouseEnter={(e) => {
-                e.target.style.color = "#1890ff";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.color = "black";
-              }}
-            />
-          </Space>
+            >
+              <BellOutlined
+                style={{
+                  fontSize: "1.2rem"
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = "#1890ff";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = "black";
+                }}
+              />
+
+              <a href="/login" style={{ color: "black" }}>
+                <LogoutOutlined
+                  style={{
+                    fontSize: "1.2rem"
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = "#1890ff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = "black";
+                  }}
+                  onClick={() => {
+                    cookies.remove("access_token", { path: "/" });
+                    cookies.remove("checkObj", { path: "/" });
+                  }}
+                />
+              </a>
+            </Space>
+          </Header>
+
+          {/* notification icon */}
+
           <Content
             style={{
-              margin: "24px 16px 0",
+              margin: "24px 16px",
               overflow: "initial"
             }}
           >
@@ -128,7 +204,7 @@ const App = () => {
                     <LoginPage
                       notify={notify}
                       baseURL={baseURL}
-                      setSliderOn={setSliderOn}
+                      setCheckObj={setCheckObj}
                     />
                   }
                 />
@@ -137,15 +213,17 @@ const App = () => {
                   path="/"
                   element={<DashboardPage notify={notify} baseURL={baseURL} />}
                 />
-                <Route
-                  path="*"
-                  element={<NotFound setSliderOn={setSliderOn} />}
-                />
-
+                <Route path="*" element={<NotFound />} />
+                {/* //------------------------------------------------------------------------------------ */}
                 <Route
                   exact
-                  path="/employee/view"
+                  path="/employee/:id"
                   element={<ViewEmployee notify={notify} baseURL={baseURL} />}
+                />
+                <Route
+                  exact
+                  path="/employee/update/:id"
+                  element={<UpdateEmployee notify={notify} baseURL={baseURL} />}
                 />
                 <Route
                   exact
@@ -156,6 +234,12 @@ const App = () => {
                   exact
                   path="employee"
                   element={<ListEmployee notify={notify} baseURL={baseURL} />}
+                />
+                {/* //------------------------------------------------------------------------------------- */}
+                <Route
+                  exact
+                  path="myProfile"
+                  element={<MyProfile notify={notify} baseURL={baseURL} />}
                 />
               </Routes>
             </div>
