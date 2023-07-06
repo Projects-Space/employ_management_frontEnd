@@ -13,13 +13,13 @@ const LoginPage = ({ notify, baseURL, setCheckObj }) => {
     navigate("/");
   }
 
-  const handleSubmit = async (event) => {
-    await axios
+  const handleSubmit = (event) => {
+    axios
       .post(baseURL + "/auth/log-in", {
         userName: event.userName,
         password: event.password
       })
-      .then(async (data) => {
+      .then((data) => {
         notify(data.data.message);
         cookies.set("access_token", data.data.data.access_token, { path: "/" });
         cookies.set("checkObj", data.data.data, { path: "/" });

@@ -1,3 +1,6 @@
+
+// Umang kosrekar
+
 import { Layout, Menu, theme, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import {
@@ -7,9 +10,7 @@ import {
   PieChartOutlined,
   RadarChartOutlined,
   AlertOutlined,
-  TeamOutlined,
-  UploadOutlined,
-  VideoCameraOutlined
+  TeamOutlined
 } from "@ant-design/icons";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -49,71 +50,43 @@ const notify = (message, type = "success") => {
   }
 };
 
-function getItem(auth, label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    auth
-  };
-}
-
 const { Content, Sider, Header } = Layout;
 const App = () => {
   const cookies = new Cookies();
   const [checkObj, setCheckObj] = useState(cookies.get("checkObj"));
-  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer }
   } = theme.useToken();
 
-  const items = [
-    getItem("admin", "Employees", "1", <TeamOutlined />),
-    getItem("admin", "Leave's Request", "2", <AlertOutlined />),
-    // getItem('User', 'sub1', <UserOutlined />, [
-    //   getItem('Tom', '3'),
-    //   getItem('Bill', '4'),
-    //   getItem('Alex', '5'),
-    // ]),
-    // getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem("employ", "My Profile", "3", <UserOutlined />),
-    getItem("all", "Upcoming", "4", <RadarChartOutlined />),
-    getItem("all", "Upcoming", "5", <PieChartOutlined />)
-  ];
   return (
     <BrowserRouter>
-      <Layout
-        style={{
-          minHeight: "100vh"
-        }}
-      >
+      <Layout hasSider>
         <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={(value) => setCollapsed(value)}
           style={{
+            marginTop: "3rem",
+            overflow: "auto",
+            height: "100vh",
+            position: "fixed",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            background: "transparent",
             display: checkObj ? "block" : "none"
           }}
         >
-          <div className="demo-logo-vertical" />
           <Menu
-            theme="dark"
-            defaultSelectedKeys={["1"]}
+            theme="light"
             mode="inline"
-            // items={items.filter(
-            //   (x) =>
-            //     (checkObj && checkObj.userType === x.auth) || x.auth === "all"
-            // )}
-            // onClick={(x) => {
-            //   console.log(x);
-            // }}
+            style={{
+              background: "transparent",
+              border: "none"
+            }}
           >
             <Menu.Item
               key="1"
               style={{
-                display: checkObj
-                  ? checkObj.userType == "admin"
+                display: cookies.get("checkObj")
+                  ? cookies.get("checkObj").userType == "admin"
                     ? "block"
                     : "none"
                   : "block"
@@ -126,8 +99,8 @@ const App = () => {
             <Menu.Item
               key="2"
               style={{
-                display: checkObj
-                  ? checkObj.userType == "admin"
+                display: cookies.get("checkObj")
+                  ? cookies.get("checkObj").userType == "admin"
                     ? "block"
                     : "none"
                   : "block"
@@ -140,8 +113,8 @@ const App = () => {
             <Menu.Item
               key="3"
               style={{
-                display: checkObj
-                  ? checkObj.userType == "employ"
+                display: cookies.get("checkObj")
+                  ? cookies.get("checkObj").userType == "employ"
                     ? "block"
                     : "none"
                   : "block"
@@ -173,8 +146,11 @@ const App = () => {
             }
           }
         >
-          <Header style={{ padding: 0, background: colorBgContainer }}>
-            <Toaster position="top-right" reverseOrder={false} />
+          <Header
+            style={{
+              background: "transparent"
+            }}
+          >
             <Space
               style={{
                 position: "absolute",
@@ -219,15 +195,19 @@ const App = () => {
 
           {/* notification icon */}
 
-          <Content style={{ margin: "24px 16px 0" }}>
+          <Content
+            style={{
+              margin: "24px 16px",
+              overflow: "initial"
+            }}
+          >
             <div
               style={{
-                padding: 24,
-                minHeight: 360,
-                background: colorBgContainer
+                height: "100vh",
+                textAlign: "center"
               }}
             >
-              {/* <Toaster position="top-right" reverseOrder={false} /> */}
+              <Toaster position="top-right" reverseOrder={false} />
               <Routes>
                 <Route
                   exact
