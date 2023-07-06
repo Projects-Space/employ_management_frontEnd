@@ -37,18 +37,18 @@ const MyProfile = ({ notify, baseURL }) => {
     secondHalf: false
   });
 
-  // useEffect(() => {
-  //   axios
-  //     .get(baseURL + "/user/getProfile", { headers: { access_token } })
-  //     .then(({ data }) => {
-  //       setProfile(data.data);
-  //       setLeaveData(data.data.leaveData);
-  //     })
-  //     .catch(({ respose }) => {
-  //       console.log("respose", respose);
-  //       notify("Something went wrong", "error");
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(baseURL + "/user/getProfile", { headers: { access_token } })
+      .then(({ data }) => {
+        setProfile(data.data);
+        setLeaveData(data.data.leaveData);
+      })
+      .catch(({ respose }) => {
+        console.log("respose", respose);
+        notify("Something went wrong", "error");
+      });
+  }, []);
 
   const deleteBtnHandler = (e) => {
     const id = e.target.id ? e.target.id : e.target.parentNode.id;
