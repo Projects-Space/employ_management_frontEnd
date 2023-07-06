@@ -21,6 +21,8 @@ import ListEmployee from "./page/employees/ListEmployee";
 import UpdateEmployee from "./page/employees/UpdateEmployee";
 import ViewEmployee from "./page/employees/ViewEmployee";
 
+import LeaveRequest from "./page/leaveRequest/LeaveRequest";
+
 import MyProfile from "./page/myProfile/MyProfile";
 
 import toast, { Toaster } from "react-hot-toast";
@@ -96,7 +98,7 @@ const App = () => {
             >
               <AlertOutlined />
               <span>Leave's Request</span>
-              <Link to="/employee" />
+              <Link to="/leave-request" />
             </Menu.Item>
             <Menu.Item
               key="3"
@@ -234,6 +236,12 @@ const App = () => {
                   exact
                   path="employee"
                   element={<ListEmployee notify={notify} baseURL={baseURL} />}
+                />
+                {/* //------------------------------------------------------------------------------------- */}
+                <Route
+                  exact
+                  path="leave-request"
+                  element={<LeaveRequest notify={notify} baseURL={baseURL} />}
                 />
                 {/* //------------------------------------------------------------------------------------- */}
                 <Route

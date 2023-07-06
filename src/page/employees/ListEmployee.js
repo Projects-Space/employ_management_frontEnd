@@ -7,7 +7,7 @@ import Cookies from "universal-cookie";
 import authChecker from "../../helper/authChecker";
 const { Search } = Input;
 
-const ListEmployee = ({ baseURL, notify, setTransporter }) => {
+const ListEmployee = ({ baseURL, notify }) => {
   const [data, setData] = useState([]);
   const [reqObj, setReqObj] = useState({
     page: 1,
@@ -96,7 +96,7 @@ const ListEmployee = ({ baseURL, notify, setTransporter }) => {
         renderItem={(item) => (
           <List.Item>
             <div className="list-div">
-              <Link to={`/employee/${item._id}`}>
+              <Link to={`/employee/update/${item._id}`}>
                 <List.Item.Meta
                   title={item.fullName}
                   description={item.designation ? item.designation : " "}

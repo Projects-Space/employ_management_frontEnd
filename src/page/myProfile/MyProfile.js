@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DeleteOutlined } from "@ant-design/icons";
+import Tooltip from "@mui/material/Tooltip";
 import {
   Space,
   Card,
@@ -25,7 +26,7 @@ const MyProfile = ({ notify, baseURL }) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const access_token = cookies.get("access_token");
-  authChecker(baseURL, notify, navigate, access_token, "employ");
+  authChecker(baseURL, notify, navigate, access_token, "admin");
 
   const [form] = Form.useForm();
   const [profile, setProfile] = useState({});
@@ -36,55 +37,64 @@ const MyProfile = ({ notify, baseURL }) => {
     secondHalf: false
   });
 
-  useEffect(() => {
-    axios
-      .get(baseURL + "/user/getProfile", { headers: { access_token } })
-      .then(({ data }) => {
-        setProfile(data.data);
-        setLeaveData(data.data.leaveData);
-      })
-      .catch(({ respose }) => {
-        console.log("respose", respose);
-        notify("Something went wrong", "error");
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(baseURL + "/user/getProfile", { headers: { access_token } })
+  //     .then(({ data }) => {
+  //       setProfile(data.data);
+  //       setLeaveData(data.data.leaveData);
+  //     })
+  //     .catch(({ respose }) => {
+  //       console.log("respose", respose);
+  //       notify("Something went wrong", "error");
+  //     });
+  // }, []);
 
   const deleteBtnHandler = (e) => {
-    console.log("e.target.id", e.target);
+    const id = e.target.id ? e.target.id : e.target.parentNode.id;
     axios
-      .get(baseURL + "/leave/remove/" + e.target.id)
+      .get(baseURL + "/leave/remove/" + id, {
+        headers: { access_token }
+      })
       .then(({ data }) => {
-        console.log(data);
+        window.location.reload();
+        notify(data.message);
       })
       .catch(({ respose }) => {
-        console.log(respose);
+        if (respose) {
+          notify(respose.data.message, "error");
+        }
       });
   };
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      console.log(values);
-      axios
-        .post(
-          baseURL + "/leave/apply",
-          {
-            typeOfLeave: values.typeOfLeave,
-            leaveDescription: values.leaveDescription,
-            startDate: values.dateRange[0],
-            endDate: values.dateRange[1],
-            ...checkBox
-          },
-          { headers: { access_token } }
-        )
-        .then(({ data }) => {
-          notify(data.message);
-          setLeaveData(false);
-        })
-        .catch(({ response }) => {
-          notify(response.data.message, "error");
-          console.log(response.data.message);
-        });
-    });
+    form
+      .validateFields()
+      .then((values) => {
+        console.log(values, checkBox);
+        axios
+          .post(
+            baseURL + "/leave/apply",
+            {
+              typeOfLeave: values.typeOfLeave,
+              leaveDescription: values.leaveDescription,
+              startDate: values.dateRange[0],
+              endDate: values.dateRange[1],
+              ...checkBox
+            },
+            { headers: { access_token } }
+          )
+          .then(({ data }) => {
+            window.location.reload();
+            notify(data.message);
+            setVisible(false);
+          })
+          .catch(({ response }) => {
+            notify(response.data.message, "error");
+            console.log(response.data.message);
+          });
+      })
+      .catch((data) => {});
   };
 
   const checkboxHandler = (e) => {
@@ -153,7 +163,7 @@ const MyProfile = ({ notify, baseURL }) => {
               }}
             >
               {parseFloat(
-                (profile.usedLeaves /
+                (profile.availableLeaves /
                   (profile.usedLeaves + profile.availableLeaves)) *
                   100
               ).toFixed(2)}
@@ -333,11 +343,14 @@ const MyProfile = ({ notify, baseURL }) => {
         </Col>
       </Row>
       {leaveData.map((item) => {
+        console.log(item);
         return (
           <Row justify="center" align="center">
             <Col>
               <Card bordered={false} style={leaveTypeCard}>
-                <div>{item.typeOfLeave}</div>
+                <Tooltip title={item.leaveDescription} placement="top-start">
+                  <div>{item.typeOfLeave}</div>
+                </Tooltip>
               </Card>
             </Col>
             <Col>
@@ -360,34 +373,50 @@ const MyProfile = ({ notify, baseURL }) => {
             </Col>
             <Col>
               <Card bordered={false} style={fromToCard}>
-                <div>
-                  {moment(item.startDate).format("DD MMM")} -{" "}
-                  {moment(item.endDate).format("DD MMM, YY")}
-                </div>
+                <Tooltip
+                  title={
+                    (item.firstHalf ? "First Half" : "") +
+                    " / " +
+                    (item.secondHalf ? "Second Half" : "")
+                  }
+                  placement="top-start"
+                >
+                  <div>
+                    {moment(item.startDate).format("DD MMM")} -{" "}
+                    {moment(item.endDate).format("DD MMM, YY")}
+                  </div>
+                </Tooltip>
               </Card>
             </Col>
             <Col>
               <Card bordered={false} style={leaveDaysCard}>
-                <div>{item.numberOfLeave}</div>
+                <Tooltip
+                  title={
+                    (item.firstHalf ? "First Half" : "") +
+                    " / " +
+                    (item.secondHalf ? "Second Half" : "")
+                  }
+                  placement="top"
+                >
+                  <div>{item.numberOfLeave}</div>
+                </Tooltip>
               </Card>
             </Col>
             <Col>
               <Card bordered={false} style={actionCard}>
-                <DeleteOutlined
+                <Button
                   style={{
-                    display: item.status == "pending" ? "block" : "none"
+                    display: item.status == "pending" ? "block" : "none",
+                    color: "red",
+                    border: "1px solid red"
                   }}
                   id={item._id}
-                  onMouseEnter={(e) => {
-                    e.target.style.color = "red";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.color = "#1890ff";
-                  }}
                   onClick={(e) => {
                     deleteBtnHandler(e);
                   }}
-                />
+                >
+                  Delete
+                </Button>
               </Card>
             </Col>
           </Row>
