@@ -107,33 +107,50 @@ const MyProfile = ({ notify, baseURL }) => {
     width: "20rem",
     cursor: "default",
     color: "rgb(118 118 118)",
-    margin: "0rem 1rem"
+    margin: "0rem 1rem",
+    // background: "transparent",
+    border: "none"
   };
   const leaveTypeCard = {
     width: 500,
     textAlign: "left",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const statusCard = {
     width: 110,
     textAlign: "center",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const fromToCard = {
     width: 200,
     textAlign: "center",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const leaveDaysCard = {
     width: 150,
     textAlign: "center",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const actionCard = {
     width: 80,
     textAlign: "center",
     fontSize: "1rem",
-    color: "#1890ff"
+    color: "#1890ff",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
 
   return (
@@ -145,7 +162,10 @@ const MyProfile = ({ notify, baseURL }) => {
             style={{
               width: 400,
               textAlign: "center",
-              fontSize: "2rem"
+              fontSize: "2rem",
+              background: "transparent",
+              border: "none",
+              boxShadow: "none"
             }}
           >
             <div>{profile.firstName + " " + profile.lastName}</div>
@@ -159,7 +179,10 @@ const MyProfile = ({ notify, baseURL }) => {
             <div
               style={{
                 fontSize: "1.8rem",
-                fontWeight: "bold"
+                fontWeight: "bold",
+                background: "transparent",
+                border: "none",
+                boxShadow: "none"
               }}
             >
               {parseFloat(
@@ -207,7 +230,10 @@ const MyProfile = ({ notify, baseURL }) => {
             style={{
               width: 400,
               textAlign: "center",
-              fontSize: "2rem"
+              fontSize: "2rem",
+              background: "transparent",
+              border: "none",
+              boxShadow: "none"
             }}
           >
             <div>Leave List</div>

@@ -14,9 +14,7 @@ const LeaveRequest = ({ notify, baseURL }) => {
   const access_token = cookies.get("access_token");
   authChecker(baseURL, notify, navigate, access_token, "admin");
 
-  const [form] = Form.useForm();
   const [leaveData, setLeaveData] = useState([]);
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     axios
@@ -52,26 +50,41 @@ const LeaveRequest = ({ notify, baseURL }) => {
   const leaveTypeCard = {
     width: 500,
     textAlign: "left",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const fromToCard = {
     width: 200,
     textAlign: "center",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const leaveDaysCard = {
     width: 150,
     textAlign: "center",
-    fontSize: "1rem"
+    fontSize: "1rem",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const actionCard = {
     width: 80,
     textAlign: "center",
     fontSize: "1rem",
-    color: "#1890ff"
+    color: "#1890ff",
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
   const optionStyle = {
-    width: 100
+    width: 100,
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
   };
 
   return (
@@ -80,7 +93,10 @@ const LeaveRequest = ({ notify, baseURL }) => {
         <Col>
           <Card
             style={{
-              fontSize: "1.6rem"
+              fontSize: "1.6rem",
+              background: "transparent",
+              border: "none",
+              boxShadow: "none"
             }}
           >
             Approve Leave From here

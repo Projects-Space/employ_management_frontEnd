@@ -90,11 +90,16 @@ const ListEmployee = ({ baseURL, notify }) => {
       />
       <List
         style={{
-          marginTop: "4rem"
+          marginTop: "4rem",
+          border: "none"
         }}
         dataSource={data}
         renderItem={(item) => (
-          <List.Item>
+          <List.Item
+            style={{
+              border: "none"
+            }}
+          >
             <div className="list-div">
               <Link to={`/employee/update/${item._id}`}>
                 <List.Item.Meta

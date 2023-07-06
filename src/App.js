@@ -67,11 +67,18 @@ const App = () => {
             left: 0,
             top: 0,
             bottom: 0,
-            background: colorBgContainer,
+            background: "transparent",
             display: checkObj ? "block" : "none"
           }}
         >
-          <Menu theme="light" mode="inline">
+          <Menu
+            theme="light"
+            mode="inline"
+            style={{
+              background: "transparent",
+              border: "none"
+            }}
+          >
             <Menu.Item
               key="1"
               style={{
@@ -138,7 +145,7 @@ const App = () => {
         >
           <Header
             style={{
-              background: colorBgContainer
+              background: "transparent"
             }}
           >
             <Space
