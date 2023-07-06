@@ -26,7 +26,7 @@ const MyProfile = ({ notify, baseURL }) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const access_token = cookies.get("access_token");
-  authChecker(baseURL, notify, navigate, access_token, "admin");
+  authChecker(baseURL, notify, navigate, access_token, "employ");
 
   const [form] = Form.useForm();
   const [profile, setProfile] = useState({});
