@@ -67,20 +67,6 @@ const App = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
-
-  const items = [
-    getItem("admin", "Employees", "1", <TeamOutlined />),
-    getItem("admin", "Leave's Request", "2", <AlertOutlined />),
-    // getItem('User', 'sub1', <UserOutlined />, [
-    //   getItem('Tom', '3'),
-    //   getItem('Bill', '4'),
-    //   getItem('Alex', '5'),
-    // ]),
-    // getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-    getItem("employ", "My Profile", "3", <UserOutlined />),
-    getItem("all", "Upcoming", "4", <RadarChartOutlined />),
-    getItem("all", "Upcoming", "5", <PieChartOutlined />)
-  ];
   return (
     <BrowserRouter>
       <Layout
@@ -97,18 +83,7 @@ const App = () => {
           }}
         >
           <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={["1"]}
-            mode="inline"
-            // items={items.filter(
-            //   (x) =>
-            //     (checkObj && checkObj.userType === x.auth) || x.auth === "all"
-            // )}
-            // onClick={(x) => {
-            //   console.log(x);
-            // }}
-          >
+          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             <Menu.Item
               key="1"
               style={{

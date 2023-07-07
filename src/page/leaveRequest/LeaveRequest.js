@@ -48,8 +48,8 @@ const LeaveRequest = ({ notify, baseURL }) => {
   };
 
   const leaveTypeCard = {
-    width: 500,
-    textAlign: "left",
+    width: 300,
+    textAlign: "center",
     fontSize: "1rem",
     background: "transparent",
     border: "none",
@@ -86,6 +86,12 @@ const LeaveRequest = ({ notify, baseURL }) => {
     border: "none",
     boxShadow: "none"
   };
+  const employeeNameCard = {
+    width: 300,
+    background: "transparent",
+    border: "none",
+    boxShadow: "none"
+  };
 
   return (
     <>
@@ -104,6 +110,14 @@ const LeaveRequest = ({ notify, baseURL }) => {
         </Col>
       </Row>
       <Row justify="center" align="center">
+        <Col>
+          <Card
+            bordered={false}
+            style={{ ...employeeNameCard, fontWeight: "bold" }}
+          >
+            <div>Employee Name</div>
+          </Card>
+        </Col>
         <Col>
           <Card
             bordered={false}
@@ -134,6 +148,11 @@ const LeaveRequest = ({ notify, baseURL }) => {
       {leaveData.map((item) => {
         return (
           <Row justify="center" align="center">
+            <Card bordered={false} style={employeeNameCard}>
+              <div>
+                {item.userData.firstName + " " + item.userData.lastName}
+              </div>
+            </Card>
             <Col>
               <Card bordered={false} style={leaveTypeCard}>
                 <Tooltip title={item.leaveDescription} placement="top-start">
