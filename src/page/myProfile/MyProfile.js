@@ -13,7 +13,8 @@ import {
   Input,
   Select,
   DatePicker,
-  Checkbox
+  Checkbox,
+  Typography,
 } from "antd";
 import moment from "moment";
 import axios from "axios";
@@ -21,6 +22,7 @@ import Cookies from "universal-cookie";
 import authChecker from "../../helper/authChecker";
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const { Title } = Typography;
 
 const MyProfile = ({ notify, baseURL }) => {
   const navigate = useNavigate();
@@ -34,7 +36,7 @@ const MyProfile = ({ notify, baseURL }) => {
   const [visible, setVisible] = useState(false);
   const [checkBox, setCheckBox] = useState({
     firstHalf: false,
-    secondHalf: false
+    secondHalf: false,
   });
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const MyProfile = ({ notify, baseURL }) => {
     const id = e.target.id ? e.target.id : e.target.parentNode.id;
     axios
       .get(baseURL + "/leave/remove/" + id, {
-        headers: { access_token }
+        headers: { access_token },
       })
       .then(({ data }) => {
         window.location.reload();
@@ -80,7 +82,7 @@ const MyProfile = ({ notify, baseURL }) => {
               leaveDescription: values.leaveDescription,
               startDate: values.dateRange[0],
               endDate: values.dateRange[1],
-              ...checkBox
+              ...checkBox,
             },
             { headers: { access_token } }
           )
@@ -102,14 +104,14 @@ const MyProfile = ({ notify, baseURL }) => {
   };
 
   const cardStyle = {
-    background: "#d0d1d3",
+    background: "#02112A",
     height: "8rem",
     width: "20rem",
     cursor: "default",
-    color: "rgb(118 118 118)",
+    color: "#ffffff",
     margin: "0rem 1rem",
     // background: "transparent",
-    border: "none"
+    border: "none",
   };
   const leaveTypeCard = {
     width: 500,
@@ -117,7 +119,7 @@ const MyProfile = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const statusCard = {
     width: 110,
@@ -125,7 +127,7 @@ const MyProfile = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const fromToCard = {
     width: 200,
@@ -133,7 +135,7 @@ const MyProfile = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const leaveDaysCard = {
     width: 150,
@@ -141,7 +143,7 @@ const MyProfile = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const actionCard = {
     width: 80,
@@ -150,7 +152,7 @@ const MyProfile = ({ notify, baseURL }) => {
     color: "#1890ff",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
 
   return (
@@ -165,7 +167,7 @@ const MyProfile = ({ notify, baseURL }) => {
               fontSize: "2rem",
               background: "transparent",
               border: "none",
-              boxShadow: "none"
+              boxShadow: "none",
             }}
           >
             <div>{profile.firstName + " " + profile.lastName}</div>
@@ -182,15 +184,15 @@ const MyProfile = ({ notify, baseURL }) => {
                 fontWeight: "bold",
                 background: "transparent",
                 border: "none",
-                boxShadow: "none"
+                boxShadow: "none",
               }}
             >
-              {parseFloat(
+              {/* {parseFloat(
                 (profile.availableLeaves /
                   (profile.usedLeaves + profile.availableLeaves)) *
                   100
-              ).toFixed(2)}
-              %
+              ).toFixed(2)} */}
+              0%
             </div>
           </Card>
         </Col>
@@ -200,12 +202,13 @@ const MyProfile = ({ notify, baseURL }) => {
             <div
               style={{
                 fontSize: "1.8rem",
-                fontWeight: "bold"
+                fontWeight: "bold",
               }}
             >
-              {profile.usedLeaves +
+              {/* {profile.usedLeaves +
                 "/" +
-                (profile.availableLeaves + profile.usedLeaves)}
+                (profile.availableLeaves + profile.usedLeaves)} */}
+              0
             </div>
           </Card>
         </Col>
@@ -215,7 +218,7 @@ const MyProfile = ({ notify, baseURL }) => {
             <div
               style={{
                 fontSize: "1.8rem",
-                fontWeight: "bold"
+                fontWeight: "bold",
               }}
             >
               10
@@ -223,21 +226,15 @@ const MyProfile = ({ notify, baseURL }) => {
           </Card>
         </Col>
       </Row>
-      <Row justify="center" align="center">
-        <Col>
-          <Card
-            bordered={false}
-            style={{
-              width: 400,
-              textAlign: "center",
-              fontSize: "2rem",
-              background: "transparent",
-              border: "none",
-              boxShadow: "none"
-            }}
-          >
-            <div>Leave List</div>
-          </Card>
+      <Row justify="space-around" align="middle">
+        <Col span={8}>
+          {/* <div>Leave List</div> */}
+          <Title level={3}>Leave List</Title>
+        </Col>
+        <Col span={8} align="right">
+          <Button type="primary" onClick={() => setVisible(true)}>
+            Apply for Leave
+          </Button>
         </Col>
       </Row>
       <Space
@@ -246,7 +243,7 @@ const MyProfile = ({ notify, baseURL }) => {
           display: "flex",
           justifyContent: "flex-end",
           top: "22rem",
-          right: "17rem"
+          right: "17rem",
         }}
       >
         <Modal
@@ -259,7 +256,7 @@ const MyProfile = ({ notify, baseURL }) => {
             </Button>,
             <Button key="submit" type="primary" onClick={handleOk}>
               Submit
-            </Button>
+            </Button>,
           ]}
         >
           <Form form={form}>
@@ -267,8 +264,8 @@ const MyProfile = ({ notify, baseURL }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please Fill this"
-                }
+                  message: "Please Fill this",
+                },
               ]}
               name="typeOfLeave"
               label="Type Of Leave"
@@ -291,8 +288,8 @@ const MyProfile = ({ notify, baseURL }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please Fill this"
-                }
+                  message: "Please Fill this",
+                },
               ]}
               name="dateRange"
               label="From / To"
@@ -305,8 +302,8 @@ const MyProfile = ({ notify, baseURL }) => {
               rules={[
                 {
                   required: true,
-                  message: "Please Fill this"
-                }
+                  message: "Please Fill this",
+                },
               ]}
               name="leaveDescription"
               label="Description"
@@ -331,9 +328,6 @@ const MyProfile = ({ notify, baseURL }) => {
             </Checkbox>
           </Form>
         </Modal>
-        <Button type="primary" onClick={() => setVisible(true)}>
-          Apply for Leave
-        </Button>
       </Space>
       <Row justify="center" align="center">
         <Col>
@@ -389,7 +383,7 @@ const MyProfile = ({ notify, baseURL }) => {
                       ? "#6fb86f"
                       : item.status == "reject"
                       ? "#df3e42"
-                      : "#f76400"
+                      : "#f76400",
                 }}
               >
                 <div>
@@ -434,7 +428,7 @@ const MyProfile = ({ notify, baseURL }) => {
                   style={{
                     display: item.status == "pending" ? "block" : "none",
                     color: "red",
-                    border: "1px solid red"
+                    border: "1px solid red",
                   }}
                   id={item._id}
                   onClick={(e) => {
