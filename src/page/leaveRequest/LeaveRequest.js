@@ -35,7 +35,7 @@ const LeaveRequest = ({ notify, baseURL }) => {
         baseURL + "/leave/change-status",
         {
           id: a[1],
-          status: a[0]
+          status: a[0],
         },
         { headers: { access_token } }
       )
@@ -53,7 +53,7 @@ const LeaveRequest = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const fromToCard = {
     width: 200,
@@ -61,7 +61,7 @@ const LeaveRequest = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const leaveDaysCard = {
     width: 150,
@@ -69,7 +69,7 @@ const LeaveRequest = ({ notify, baseURL }) => {
     fontSize: "1rem",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const actionCard = {
     width: 80,
@@ -78,19 +78,19 @@ const LeaveRequest = ({ notify, baseURL }) => {
     color: "#1890ff",
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const optionStyle = {
     width: 100,
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
   const employeeNameCard = {
     width: 300,
     background: "transparent",
     border: "none",
-    boxShadow: "none"
+    boxShadow: "none",
   };
 
   return (
@@ -102,10 +102,10 @@ const LeaveRequest = ({ notify, baseURL }) => {
               fontSize: "1.6rem",
               background: "transparent",
               border: "none",
-              boxShadow: "none"
+              boxShadow: "none",
             }}
           >
-            Approve Leave From here
+            Approve List
           </Card>
         </Col>
       </Row>
@@ -141,11 +141,11 @@ const LeaveRequest = ({ notify, baseURL }) => {
         </Col>
         <Col>
           <Card bordered={false} style={{ ...actionCard, fontWeight: "bold" }}>
-            <div></div>
+            <div>Action</div>
           </Card>
         </Col>
       </Row>
-      {leaveData.map((item) => {
+      {leaveData.map((item, i) => {
         return (
           <Row justify="center" align="center">
             <Card bordered={false} style={employeeNameCard}>

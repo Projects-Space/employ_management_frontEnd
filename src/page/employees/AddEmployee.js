@@ -82,7 +82,7 @@ const AddEmployee = ({ baseURL, notify }) => {
     <Row type="flex" justify="center" style={{ minHeight: "100vh" }}>
       <Col>
         <Card
-          title="Register"
+          title="Add Employee"
           bordered={false}
           style={{
             width: 450,
